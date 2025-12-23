@@ -8,7 +8,6 @@ import BottomNav from '../components/BottomNavUser';
 
 const { width, height } = Dimensions.get('window');
 
-
 export default function UserProgressScreen() {
   const [userData, setUserData] = useState(null);
   const [userName, setUserName] = useState('User');
@@ -23,66 +22,38 @@ export default function UserProgressScreen() {
       if (userDataString) {
         const user = JSON.parse(userDataString);
         setUserData(user);
-      
         const fullName = user.fullName || user.name || user.firstName || 'User';
         const firstName = fullName.split(' ')[0] || 'User';
         setUserName(firstName);
-        console.log('Loaded user data:', user);
       }
     } catch (error) {
       console.error('Error loading user data:', error);
     }
   };
- 
-  const headerTopMargin = Math.max(82, height * 0.1);
-  const headerLeftMargin = Math.max(20, width * 0.05);
+
+  // Reduce top margin for header
+  const headerTopMargin = 30; 
+  const headerLeftMargin = 20;
   const titleFontSize = Math.min(30, width * 0.078); 
   const titleLineHeight = Math.min(36, width * 0.093); 
   const subtitleFontSize = Math.min(16, width * 0.041);
   const subtitleLineHeight = Math.min(20, width * 0.052);
-  const subtitleMaxWidth = Math.min(280, width * 0.74); 
-  
- 
+
   const cardWidth = Math.min(353, width * 0.93);
   const cardHeight = Math.max(118, height * 0.145);
-  const cardTopMargin = Math.max(168, height * 0.205);
-  const cardLeftMargin = Math.max(17, width * 0.045);
   const cardBorderRadius = Math.max(23, width * 0.06);
-  
 
-  const planTextTop = Math.max(310, height * 0.38);
-  const planTextLeft = Math.max(23, width * 0.061);
-  const planTextFontSize = Math.max(16, width * 0.042);
-  const planTextLineHeight = Math.max(19, width * 0.05);
-  
-  // Module card styling
   const moduleWidth = Math.min(354, width * 0.93);
   const moduleHeight = Math.max(125, height * 0.153);
-  const moduleTop = Math.max(337, height * 0.41);
-  const moduleLeft = Math.max(19, width * 0.05);
-  
-  // Module title text styling
-  const moduleTitleWidth = Math.min(317, width * 0.84);
-  const moduleTitleHeight = Math.max(38, height * 0.047);
-  const moduleTitleTop = Math.max(352, height * 0.43);
-  const moduleTitleLeft = Math.max(34, width * 0.09);
   const moduleTitleFontSize = Math.max(18, width * 0.047);
   const moduleTitleLineHeight = Math.max(19, width * 0.05);
-  
-  // Module subtitle text styling
   const moduleSubtitleFontSize = Math.max(14, width * 0.037);
   const moduleSubtitleLineHeight = Math.max(16, width * 0.042);
-  
 
-  const navWidth = Math.min(265, width * 0.7);
-  const navHeight = Math.max(60, height * 0.073);
-  const navBorderRadius = Math.max(244, width * 0.64); // Very rounded
-  const navLeftMargin = Math.max(64, width * 0.17);
- 
   const modules = [
-    { title: "Company",  locked: false },
-    { title: "Company ", progress: 30, locked: false },
-    { title: "Company ", progress: 0, locked: true },
+    { title: "Company", progress: 50, locked: false },
+    { title: "Company 2", progress: 30, locked: false },
+    { title: "Company 3", progress: 0, locked: true },
   ];
 
   return (
@@ -90,121 +61,82 @@ export default function UserProgressScreen() {
       <ScrollView 
         contentContainerStyle={{ 
           paddingHorizontal: headerLeftMargin,
-          paddingTop: headerTopMargin 
+          paddingTop: headerTopMargin,
+          paddingBottom: 100, // space for bottom nav
         }}
       >
         {/* Header */}
-        <View className="flex-row justify-between items-start mb-6">
-          <View style={{ flex: 1, maxWidth: subtitleMaxWidth, marginRight: 8 }}>
+        <View className="flex-row justify-between items-start mb-3">
+          <View style={{ flex: 1 }}>
             <Text
-              numberOfLines={2}
-              adjustsFontSizeToFit
-              minimumFontScale={0.7}
-              allowFontScaling={true}
               style={{
                 fontFamily: 'SF Compact Rounded',
                 fontWeight: '600',
                 fontSize: titleFontSize,
                 lineHeight: titleLineHeight,
-                letterSpacing: 0,
                 color: '#000000',
-                marginBottom: 8,
+                marginBottom: 4,
               }}
             >
-             Your Progress
+              Your Progress
             </Text>
             <Text
-              numberOfLines={4}
-              adjustsFontSizeToFit
-              minimumFontScale={0.8}
               style={{
                 fontFamily: 'SF Compact Rounded',
                 fontWeight: '400',
                 fontSize: subtitleFontSize,
                 lineHeight: subtitleLineHeight,
-                letterSpacing: 0,
                 color: '#6B7280',
-                textAlignVertical: 'center',
               }}
             >
               Track your onboarding completion
             </Text>
           </View>
-          <View className="flex-row" style={{ flexShrink: 0 }}>
+
+          <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity 
-              className="mr-3 p-2 rounded-full bg-gray-200"
-              style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}
+              style={{ width: 40, height: 40, marginRight: 8, justifyContent: 'center', alignItems: 'center', borderRadius: 20, backgroundColor: '#E5E7EB' }}
             >
               <Ionicons name="settings-outline" size={20} color="#3E0288" />
             </TouchableOpacity>
             <TouchableOpacity 
-              className="p-2 rounded-full bg-gray-200"
-              style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}
+              style={{ width: 40, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 20, backgroundColor: '#E5E7EB' }}
             >
               <Ionicons name="notifications-outline" size={20} color="#3E0288" />
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Main Progress Card with Black Border */}
+        {/* Progress Card */}
         <View 
           style={{
-            width: cardWidth + 7,
-            height: cardHeight + 7,
-            marginTop: 5, 
-            marginLeft: cardLeftMargin - headerLeftMargin,
-            marginBottom: 24,
-            borderRadius: cardBorderRadius + 2,
-            borderTopWidth: 2,
-            borderRightWidth: 6,
-            borderBottomWidth: 6,
-            borderLeftWidth: 2,
+            width: cardWidth,
+            height: cardHeight,
+            marginBottom: 20,
+            borderRadius: cardBorderRadius,
+            borderWidth: 2,
             borderColor: '#000000',
             backgroundColor: '#3E0288',
-            overflow: 'hidden',
             padding: 16,
             justifyContent: 'space-between',
           }}
         >
-          <Text 
-            className="text-white font-semibold"
-            style={{ fontSize: 22, marginBottom: 8 }}
-          >
+          <Text style={{ fontSize: 22, fontWeight: '600', color: 'white', marginBottom: 6 }}>
             Overall Completion
           </Text>
-          <Text  className="text-white line-height-1 letter-spacing-0"
-            style={{ fontSize:13, marginBottom: 6 }}> 2 of 5 sections completed</Text>
-          <View>
-            <View className="w-full h-2 rounded-full bg-[#999999]">
-              <View
-                className="h-2 rounded-full bg-white"
-                style={{ width: '50%' }}
-              />
-            </View>
-            <View className="w-full flex-row justify-between">
-              <Text className="text-[#E2E3E3] text-xs mt-2">Total Progress</Text>
-              <Text className="text-[#E2E3E3] mt-2 text-right text-xs">50%</Text>
-            </View>
+          <Text style={{ fontSize: 13, color: 'white', marginBottom: 6 }}>
+            2 of 5 sections completed
+          </Text>
+          <View style={{ width: '100%', height: 8, backgroundColor: '#999999', borderRadius: 4 }}>
+            <View style={{ width: '50%', height: 8, backgroundColor: '#fff', borderRadius: 4 }} />
           </View>
         </View>
 
-        {/* Onboarding Plan Title */}
-        <Text
-          style={{
-            fontFamily: 'SF Compact Rounded',
-            fontWeight: '400',
-            fontSize: 20,
-            lineHeight: 23,
-            letterSpacing: 0,
-            color: '#000000',
-            marginLeft: planTextLeft - headerLeftMargin,
-            marginBottom: 16,
-          }}
-        >
+        {/* Modules */}
+        <Text style={{ fontSize: 20, fontWeight: '400', color: '#000000', marginBottom: 12 }}>
           Training Modules
         </Text>
 
-        {/* Onboarding Modules */}
         {modules.map((module, index) => (
           <TouchableOpacity
             key={index}
@@ -212,11 +144,10 @@ export default function UserProgressScreen() {
             style={{
               width: moduleWidth,
               height: moduleHeight,
-              marginLeft: moduleLeft - headerLeftMargin,
-              marginBottom: 16,
               backgroundColor: '#FFFFFF',
               borderRadius: 12,
               padding: 16,
+              marginBottom: 16,
               justifyContent: 'space-between',
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 2 },
@@ -225,21 +156,8 @@ export default function UserProgressScreen() {
               elevation: 3,
             }}
           >
-            <View className="flex-row justify-between items-center">
-              <Text 
-                numberOfLines={2}
-                style={{ 
-                  fontFamily: 'SF Compact Rounded',
-                  fontWeight: '400',
-                  fontSize: moduleTitleFontSize,
-                  lineHeight: moduleTitleLineHeight,
-                  letterSpacing: 0,
-                  color: '#000000',
-                  flex: 1,
-                  textAlignVertical: 'center',
-                  maxWidth: moduleTitleWidth * 0.85, // Leave room for icon
-                }}
-              >
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text style={{ fontSize: moduleTitleFontSize, lineHeight: moduleTitleLineHeight, fontWeight: '400', color: '#000', flex: 1 }}>
                 {module.title}
               </Text>
               <Ionicons
@@ -248,42 +166,11 @@ export default function UserProgressScreen() {
                 color={module.locked ? '#999999' : '#3E0288'}
               />
             </View>
-            <Text 
-              numberOfLines={2}
-              style={{ 
-                fontFamily: 'SF Compact Rounded',
-                fontWeight: '400',
-                fontSize: moduleSubtitleFontSize,
-                lineHeight: moduleSubtitleLineHeight,
-                letterSpacing: 0,
-                color: '#9CA3AF',
-                textAlignVertical: 'center',
-                marginTop: 8,
-                marginBottom: 12,
-              }}
-            >
-             Score 
+            <Text style={{ fontSize: moduleSubtitleFontSize, lineHeight: moduleSubtitleLineHeight, color: '#9CA3AF', marginTop: 8 }}>
+              Score
             </Text>
-            <View>
-              <View className="w-full h-2 bg-gray-200 rounded-full">
-                <View
-                  className="h-2 rounded-full bg-[#3E0288]"
-                  style={{ width: `${module.progress}%` }}
-                />
-              </View>
-              {module.locked && (
-                <Text className="text-gray-400 text-xs" style={{ marginTop: 4 }}>
-                  Locked
-                </Text>
-              )}
-              {!module.locked && (
-               <View className="w-full flex-row justify-between mt-1">
-               <Text className="text-[#3E0288] text-xs">Progress</Text>
-               <Text className="text-[#3E0288] text-xs">{module.progress}%</Text>
-             </View>
-             
-             
-              )}
+            <View style={{ width: '100%', height: 8, backgroundColor: '#E5E7EB', borderRadius: 4, marginTop: 8 }}>
+              <View style={{ width: `${module.progress || 0}%`, height: 8, backgroundColor: '#3E0288', borderRadius: 4 }} />
             </View>
           </TouchableOpacity>
         ))}
@@ -291,16 +178,14 @@ export default function UserProgressScreen() {
       </ScrollView>
 
       {/* Bottom Navigation */}
-      <View style={{ flex: 1 }}>
-      <Text>Home Screen Content</Text>
-      <BottomNav
-        navLeftMargin={20}
-        navWidth={360}
-        navHeight={60}
-        navBorderRadius={30}
-      />
-    </View>
-     
+      <View style={{ position: 'absolute', bottom: 30, width: '100%', alignItems: 'center' }}>
+        <BottomNav
+          navLeftMargin={20}
+          navWidth={360}
+          navHeight={60}
+          navBorderRadius={30}
+        />
+      </View>
     </SafeAreaView>
   );
 }

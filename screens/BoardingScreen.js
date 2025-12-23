@@ -52,13 +52,13 @@ export default function UserHomeScreen() {
       <ScrollView 
         contentContainerStyle={{ 
           paddingHorizontal: 20,
-          paddingTop: 30,
+          paddingTop: 60,
           paddingBottom: 120, // Space for bottom nav
         }}
       >
         {/* Header */}
-        <View className="flex-row justify-between items-start mb-4">
-          <View style={{ flex: 1, marginRight: 8 }}>
+        <View className="flex-row justify-between items-start mb-4 ">
+          <View style={{ flex: 1, marginRight: 9 }}>
             <Text
               numberOfLines={2}
               adjustsFontSizeToFit
@@ -70,9 +70,10 @@ export default function UserHomeScreen() {
                 lineHeight: titleLineHeight,
                 color: '#000000',
                 marginBottom: 6,
+              
               }}
             >
-              Hello {userName},
+              Our Vision,
             </Text>
             <Text
               numberOfLines={4}
@@ -86,7 +87,7 @@ export default function UserHomeScreen() {
                 color: '#6B7280',
               }}
             >
-              Complete all sections to finish your onboarding process
+              Complete the vedio to unlock the quiz
             </Text>
           </View>
           <View className="flex-row" style={{ flexShrink: 0 }}>
