@@ -10,9 +10,9 @@ const BottomNav = ({ navBorderRadius }) => {
     <View
       style={{
         position: 'absolute',
-        bottom: 2,
-        left: 90,
-        width: 205,
+        bottom: 4,
+        left: 70,
+        width: 265,
         height: 60,
         backgroundColor: '#3E0288',
         borderRadius: navBorderRadius,
@@ -24,6 +24,7 @@ const BottomNav = ({ navBorderRadius }) => {
         shadowOpacity: 0.3,
         shadowRadius: 8,
         elevation: 8,
+
       }}
     >
       {/* Home */}

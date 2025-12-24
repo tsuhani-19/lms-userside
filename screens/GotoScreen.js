@@ -35,7 +35,7 @@ export default function GotoScreen() {
 
        
         <View style={{ width: 500, height:270,
-             left:-2, alignItems: 'center', justifyContent: 'center', marginTop: -145}}>
+             left:-2, alignItems: 'center', justifyContent: 'center', marginTop: -100,marginLeft:10}}>
           <LearningSvg width={380} height={380} />
         </View>
 

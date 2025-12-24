@@ -10,6 +10,12 @@ import UserHomeScreen from './screens/UserHomeScreen';
 import VerifyEmailScreen from './screens/VerifyEmailScreen';
 import ProgressScreen from './screens/UserProgressScreen';
 import BoardingScreen from './screens/BoardingScreen'
+import ProfileScreen from './screens/ProfileScreen';
+import QuizScreen from './screens/QuizScreen';
+import SettingsScreen from './screens/SettingsScreen';
+import ChangePassword from './screens/ChangePassword';
+import NotificationScreen from './screens/NotificationScreen';
+import PerformanceScreen from './screens/PerformanceScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +33,13 @@ export default function App() {
           <Stack.Screen name="UserHome" component={UserHomeScreen} />
           <Stack.Screen name="Progress" component={ProgressScreen} />
           <Stack.Screen name="BoardingScreen" component={BoardingScreen} />
+          <Stack.Screen name='Profile' component={ProfileScreen} />
+          <Stack.Screen name='QuizScreen' component={QuizScreen} />
+          <Stack.Screen name='SettingsScreen' component={SettingsScreen} />
+          <Stack.Screen name='ChangePassword' component={ChangePassword} />
+          <Stack.Screen name='Notification' component={NotificationScreen} />
+          <Stack.Screen name='PerformanceScreen' component={PerformanceScreen }/>
+          
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
