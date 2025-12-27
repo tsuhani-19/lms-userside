@@ -5,13 +5,12 @@ import {
   TouchableOpacity,
   Dimensions,
   FlatList,
+  StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { styled } from 'nativewind';
-import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-
 
 const RNView = styled(View);
 const RNText = styled(Text);
@@ -21,6 +20,7 @@ const RNSafeAreaView = styled(SafeAreaView);
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const scaleWidth = SCREEN_WIDTH / 414;
 const scaleHeight = SCREEN_HEIGHT / 896;
+const headerFontSize = Math.min(28, SCREEN_WIDTH * 0.07);
 
 // exact design base sizes
 const CARD_WIDTH = 353;
@@ -57,51 +57,76 @@ export default function NotificationScreen({ navigation }) {
 
   return (
     <RNSafeAreaView className="flex-1 bg-white">
-      {/* top bar */}
+      {/* Header: Back on left, Settings + Notification on right */}
       <RNView
-        className="flex-row items-center justify-between"
+        className="flex-row justify-between items-center"
         style={{
-          marginTop: 40 * scaleHeight,
+            paddingTop: 20,
+          marginTop: 20,
+          marginBottom: 20,
           paddingHorizontal: 20 * scaleWidth,
         }}
       >
-        <RNTouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={22} color="#000" />
+        {/* Left: Back */}
+        <RNTouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: 8,
+            backgroundColor: '#E5E7EB',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Ionicons name="arrow-back-outline" size={18} color="#000" />
         </RNTouchableOpacity>
 
+        {/* Right: Settings + Notification */}
         <RNView className="flex-row items-center">
           <RNTouchableOpacity
-          onPress={() => navigation.navigate('SettingsScreen')}
-            style={{ marginRight: 16 * scaleWidth }}
-            className="justify-center items-center"
-          >
-            <Ionicons name="settings-outline" size={22} color="#000" />
-          </RNTouchableOpacity>
-
-          <RNView
-            className="justify-center items-center bg-[#4C1D95]"
+            onPress={() => navigation.navigate('SettingsScreen')}
             style={{
-              width: 36 * scaleWidth,
-              height: 36 * scaleWidth,
-              borderRadius: 18 * scaleWidth,
+              width: 40,
+              height: 40,
+              borderRadius: 12,
+              backgroundColor: '#F3F4F6',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: 8,
             }}
           >
-            <Ionicons name="notifications-outline" size={20} color="#fff" />
-          </RNView>
+            <Ionicons name="settings-outline" size={20} color="#000" />
+          </RNTouchableOpacity>
+
+          <RNTouchableOpacity
+            onPress={() => navigation.navigate('Notification')}
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 12,
+              backgroundColor: '#F3F4F6',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: 8,
+            }}
+          >
+            <Ionicons name="notifications-outline" size={20} color="#000" />
+          </RNTouchableOpacity>
         </RNView>
       </RNView>
 
-      {/* title + mark all read */}
+      {/* Screen Title + Mark All Read */}
       <RNView
         style={{
-          marginTop: 28 * scaleHeight,
-          paddingHorizontal: 35 * scaleWidth,
+          paddingHorizontal: 20 * scaleWidth,
+          marginBottom: 16,
         }}
       >
         <RNText
           className="text-[#111827]"
           style={{
-            fontSize: 30 * scaleWidth,
+            fontSize: headerFontSize,
             fontWeight: '600',
           }}
         >
@@ -122,13 +147,13 @@ export default function NotificationScreen({ navigation }) {
         </RNTouchableOpacity>
       </RNView>
 
-      {/* list */}
+      {/* Notifications List */}
       <FlatList
         data={notifications}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={{
-          paddingTop: 34 * scaleHeight,
+          paddingTop: 16 * scaleHeight,
           paddingHorizontal: 0,
           alignItems: 'center',
           paddingBottom: 40 * scaleHeight,

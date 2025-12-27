@@ -12,6 +12,7 @@ export default function UserProgressScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const headerFontSize = Math.min(28, width * 0.07);
 
   const headerTopMargin = 50;
   const headerLeftMargin = 22;
@@ -34,21 +35,31 @@ export default function UserProgressScreen() {
         }}
       >
 
-        {/* HEADER */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
+        {/* Back Button */}
+        <View style={{ marginBottom: 12 }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={{
-              width: 40,
-              height: 40,
-              borderRadius: 20,
+              width: 32,
+              height: 32,
+              borderRadius: 8,
               backgroundColor: '#E5E7EB',
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <Ionicons name="arrow-back-outline" size={20} color="#3E0288" />
+            <Ionicons name="arrow-back-outline" size={18} color="#3E0288" />
           </TouchableOpacity>
+        </View>
+
+        {/* HEADER */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginTop: 25, marginBottom: 16 }}>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: headerFontSize, fontWeight: '600' }}>{t('performance.performanceSummary')}</Text>
+            <Text style={{ fontSize: 16, color: '#6B7280', marginTop: 2 }}>
+              {t('performance.subtitle')}
+            </Text>
+          </View>
 
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity
@@ -56,9 +67,9 @@ export default function UserProgressScreen() {
               style={{
                 width: 40,
                 height: 40,
-                marginRight: 8,
+                marginLeft: 8,
                 borderRadius: 12,
-                backgroundColor: '#E5E7EB',
+                backgroundColor: '#F3F4F6',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
@@ -71,8 +82,9 @@ export default function UserProgressScreen() {
               style={{
                 width: 40,
                 height: 40,
+                marginLeft: 8,
                 borderRadius: 12,
-                backgroundColor: '#E5E7EB',
+                backgroundColor: '#F3F4F6',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
@@ -80,14 +92,6 @@ export default function UserProgressScreen() {
               <Ionicons name="notifications-outline" size={20} color="#3E0288" />
             </TouchableOpacity>
           </View>
-        </View>
-
-        {/* TITLE */}
-        <View style={{ marginBottom: 16 }}>
-          <Text style={{ fontSize: 22, fontWeight: '700' }}>{t('performance.performanceSummary')}</Text>
-          <Text style={{ fontSize: 16, color: '#6B7280' }}>
-            {t('performance.subtitle')}
-          </Text>
         </View>
 
         {/* PURPLE CARD */}

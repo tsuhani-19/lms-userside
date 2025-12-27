@@ -55,7 +55,7 @@ export default function UserProgressScreen() {
     { title: `${t('common.section')} 4`, status: 'locked', duration: '30 min', screen: null },
   ];
 
-  const helloFontSize = Math.min(28, width * 0.07);
+  const headerFontSize = Math.min(28, width * 0.07);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F7F7FB' }}>
@@ -67,28 +67,29 @@ export default function UserProgressScreen() {
           paddingHorizontal: width * 0.05,
         }}
       >
-        {/* 🔹 HEADER ICONS (slightly lower) */}
+        {/* 🔹 HEADER */}
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            marginBottom: 10,
-            marginTop: 10, // Add spacing from top
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            marginTop: 25,
+            marginBottom: 20,
           }}
         >
-          <HeaderIcon icon="settings-outline" onPress={() => navigation.navigate('SettingsScreen')} />
-          <HeaderIcon icon="notifications-outline" onPress={() => navigation.navigate('Notification')} />
-        </View>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: headerFontSize, fontWeight: '600', color: '#111827' }}>
+              {branchName} {t('userProgress.department')}
+            </Text>
+            <Text style={{ fontSize: 14, color: '#6B7280', marginTop: 2 }}>
+              {t('userProgress.viewOnboardingSections')}
+            </Text>
+          </View>
 
-        {/* 🔹 BRANCH / DEPARTMENT NAME (LEFT ALIGNED) */}
-        <View style={{ alignItems: 'flex-start', marginBottom: 20 }}>
-          <Text style={{ fontSize: 18, fontWeight: '600', color: '#111827' }}>
-            {branchName} {t('userProgress.department')}
-          </Text>
-          <Text style={{ fontSize: 14, color: '#6B7280', marginTop: 2 }}>
-            {t('userProgress.viewOnboardingSections')}
-          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <HeaderIcon icon="settings-outline" onPress={() => navigation.navigate('SettingsScreen')} />
+            <HeaderIcon icon="notifications-outline" onPress={() => navigation.navigate('Notification')} />
+          </View>
         </View>
 
         {/* 🔹 SECTIONS LIST */}
@@ -214,7 +215,6 @@ const HeaderIcon = ({ icon, onPress }) => (
       backgroundColor: '#F3F4F6',
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: 10, // ↓ Lower the icons slightly
     }}
   >
     <Ionicons name={icon} size={20} color="#3E0288" />

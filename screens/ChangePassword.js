@@ -19,6 +19,7 @@ export default function ChangePasswordScreen({ navigation }) {
 
   const scaleWidth = SCREEN_WIDTH / 414;
   const scaleHeight = SCREEN_HEIGHT / 896;
+  const headerFontSize = Math.min(28, SCREEN_WIDTH * 0.07);
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -49,38 +50,70 @@ export default function ChangePasswordScreen({ navigation }) {
           height: 260 * scaleHeight,
           paddingHorizontal: 20 * scaleWidth,
           paddingTop: 30 * scaleHeight,
+          justifyContent: 'space-between',
         }}
       >
-        {/* top icons */}
+        {/* Top Row: Back Button and Icons */}
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 10,
           }}
         >
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={22} color="#fff" />
+          {/* Back Button */}
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Ionicons name="arrow-back-outline" size={18} color="#fff" />
           </TouchableOpacity>
 
+          {/* top icons */}
           <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity style={{ marginRight: 20 }}>
-              <Ionicons name="settings-outline" size={22} color="#fff" />
+            <TouchableOpacity
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 12,
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 8,
+              }}
+            >
+              <Ionicons name="settings-outline" size={20} color="#fff" />
             </TouchableOpacity>
 
-            {/* ONLY CHANGE: navigate to Notification stack */}
-            <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
-              <Ionicons name="notifications-outline" size={22} color="#fff" />
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Notification')}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 12,
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 8,
+              }}
+            >
+              <Ionicons name="notifications-outline" size={20} color="#fff" />
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* title */}
-        <View style={{ marginTop: 17 * scaleHeight, marginLeft: 10 }}>
+        {/* title - Positioned at bottom of purple container */}
+        <View style={{ marginBottom:120, marginLeft: 10 }}>
           <Text
             style={{
-              fontSize: 28 * scaleWidth,
+              fontSize: headerFontSize,
               fontWeight: '600',
               color: '#fff',
             }}
@@ -91,7 +124,7 @@ export default function ChangePasswordScreen({ navigation }) {
             style={{
               fontSize: 14 * scaleWidth,
               color: '#E5E7EB',
-              marginTop: 1,
+              marginTop: 4,
             }}
           >
             {t('changePassword.subtitle')}

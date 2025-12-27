@@ -15,6 +15,7 @@ export default function QuizScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const headerFontSize = Math.min(28, width * 0.07);
 
   const primaryColor = '#3E0288';
   const primaryLight = '#5C28A3';
@@ -120,7 +121,7 @@ export default function QuizScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: width * 0.05,
@@ -128,63 +129,76 @@ export default function QuizScreen() {
           paddingBottom: insets.bottom + 80,
         }}
       >
-        {/* 🔝 HEADER */}
+        {/* Back button left, Settings + Notification right */}
         <View
           style={{
+            paddingTop: 20,
+         
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 25,
-            paddingTop: 10, // Move icons slightly down
+            marginBottom: 12,
           }}
         >
-          <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingTop: 5 }}>
-            <Ionicons name="arrow-back-outline" size={28} color={primaryColor} />
+          {/* Left: Back */}
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              backgroundColor: '#E5E7EB',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Ionicons name="arrow-back-outline" size={18} color={primaryColor} />
           </TouchableOpacity>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          {/* Right: Settings + Notification */}
+          <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity
               onPress={() => navigation.navigate('SettingsScreen')}
               style={{
-                width: 40,
-                height: 40,
-                borderRadius: 12,
+                width: 32,
+                height: 32,
+                borderRadius: 8,
                 backgroundColor: '#E5E7EB',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginRight: 8,
+                marginLeft: 8,
               }}
             >
-              <Ionicons name="settings-outline" size={20} color={primaryColor} />
+              <Ionicons name="settings-outline" size={18} color={primaryColor} />
             </TouchableOpacity>
-
             <TouchableOpacity
               onPress={() => navigation.navigate('Notification')}
               style={{
-                width: 40,
-                height: 40,
-                borderRadius: 12,
+                width: 32,
+                height: 32,
+                borderRadius: 8,
                 backgroundColor: '#E5E7EB',
                 alignItems: 'center',
                 justifyContent: 'center',
+                marginLeft: 8,
               }}
             >
-              <Ionicons name="notifications-outline" size={20} color={primaryColor} />
+              <Ionicons name="notifications-outline" size={18} color={primaryColor} />
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* 🧠 QUESTION NUMBER & TOTAL */}
-        <View style={{ marginBottom: 20 }}>
-          <Text style={{ fontSize: 20, fontWeight: '600', color: '#000' }}>
+        {/* Header */}
+        <View style={{ marginTop: 25, marginBottom: 20 }}>
+          <Text style={{ fontSize: headerFontSize, fontWeight: '600', color: '#000' }}>
             {t('quiz.question')} {currentIndex + 1} {t('quiz.of')} {questions.length}
           </Text>
         </View>
 
-        {/* 📝 QUIZ COMPONENT */}
+        {/* Question Component */}
         {renderQuestionComponent()}
 
-        {/* ✅ SUBMIT BUTTON */}
+        {/* Submit Button */}
         <TouchableOpacity
           style={{
             width: 287,

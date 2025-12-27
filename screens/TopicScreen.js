@@ -23,6 +23,7 @@ const TopicScreen = () => {
   const insets = useSafeAreaInsets();
   const statusBarHeight =
     Platform.OS === 'android' ? StatusBar.currentHeight || 0 : insets.top;
+  const headerFontSize = Math.min(28, width * 0.07);
   const sectionName = route.params?.sectionName || `${t('common.section')} 1`;
 
   const topics = [
@@ -47,40 +48,76 @@ const TopicScreen = () => {
           paddingBottom: insets.bottom + 40,
         }}
       >
-        {/* Header */}
+        {/* Header with Back on left and Settings + Notification on right */}
         <View
           style={{
+            paddingTop: 20,
             flexDirection: 'row',
-            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             marginBottom: 35,
           }}
         >
+          {/* Left: Back */}
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={{
-              padding: 6,
-              backgroundColor: '#EDE9FE',
-              borderRadius: 10,
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              backgroundColor: '#E5E7EB',
               justifyContent: 'center',
               alignItems: 'center',
-              marginBottom: 6,
             }}
           >
-            <Ionicons name="chevron-back" size={20} color="#3E0288" />
+            <Ionicons name="arrow-back-outline" size={18} color="#3E0288" />
           </TouchableOpacity>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: '700',
-              color: '#3E0288',
-              marginLeft: 12,
-              flexShrink: 1,
-              marginBottom: 6,
-            }}
-          >
-            {sectionName} - {t('topic.topics')}
-          </Text>
+
+          {/* Right: Settings + Notification */}
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SettingsScreen')}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 12,
+                backgroundColor: '#F3F4F6',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 8,
+              }}
+            >
+              <Ionicons name="settings-outline" size={20} color="#3E0288" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Notification')}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 12,
+                backgroundColor: '#F3F4F6',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 8,
+              }}
+            >
+              <Ionicons name="notifications-outline" size={20} color="#3E0288" />
+            </TouchableOpacity>
+          </View>
         </View>
+
+        {/* Section Title */}
+        <Text
+          style={{
+            fontSize: headerFontSize,
+            fontWeight: '600',
+            color: '#3E0288',
+            marginBottom: 30,
+          }}
+        >
+          {sectionName} - {t('topic.topics')}
+        </Text>
 
         {/* Purple Progress Container */}
         <View
@@ -158,7 +195,7 @@ const TopicScreen = () => {
               <View
                 style={{
                   flexDirection: 'row',
-                  alignItems: 'center', // vertical center
+                  alignItems: 'center',
                   justifyContent: 'space-between',
                 }}
               >

@@ -16,7 +16,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
-  const navigation = useNavigation(); // ✅ Move inside component
+  const navigation = useNavigation(); 
 
   const CARD_WIDTH = 420;
   const CARD_HEIGHT = 653;
@@ -25,6 +25,7 @@ export default function ProfileScreen() {
 
   const scaleWidth = SCREEN_WIDTH / 414;
   const scaleHeight = SCREEN_HEIGHT / 896;
+  const headerFontSize = Math.min(28, SCREEN_WIDTH * 0.07);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -35,41 +36,70 @@ export default function ProfileScreen() {
           paddingHorizontal: 20 * scaleWidth,
           paddingTop: 30 * scaleHeight,
           backgroundColor: '#3e0288', // solid purple background
+          justifyContent: 'space-between',
         }}
       >
-        {/* Top Icons */}
+        {/* Top Row: Back Button and Icons */}
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 10,
           }}
         >
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={22} color="#fff" />
+          {/* Back Button */}
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Ionicons name="arrow-back-outline" size={18} color="#fff" />
           </TouchableOpacity>
 
+          {/* Top Icons */}
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity
               onPress={() => navigation.navigate('SettingsScreen')}
-              style={{ marginRight: 20 }}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 12,
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 8,
+              }}
             >
-              <Ionicons name="settings-outline" size={22} color="#fff" />
+              <Ionicons name="settings-outline" size={20} color="#fff" />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate('NotificationScreen')}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 12,
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 8,
+              }}
             >
-              <Ionicons name="notifications-outline" size={22} color="#fff" />
+              <Ionicons name="notifications-outline" size={20} color="#fff" />
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Title */}
-        <View style={{ marginTop: 17 * scaleHeight, marginLeft: 10 }}>
+        {/* Title - Positioned at bottom of purple container */}
+        <View style={{ marginBottom:120, marginLeft: 10 }}>
           <Text
             style={{
-              fontSize: 28 * scaleWidth,
+              fontSize: headerFontSize,
               fontWeight: '600',
               color: '#fff',
             }}
@@ -80,7 +110,7 @@ export default function ProfileScreen() {
             style={{
               fontSize: 14 * scaleWidth,
               color: '#E5E7EB',
-              marginTop: 1,
+              marginTop: 4,
             }}
           >
             {t('profile.subtitle')}

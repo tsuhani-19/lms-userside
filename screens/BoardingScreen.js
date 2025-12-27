@@ -117,8 +117,7 @@ export default function BoardingScreen() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const titleFontSize = Math.min(30, dimensions.width * 0.078); 
-  const titleLineHeight = Math.min(30, dimensions.width * 0.093); 
+  const headerFontSize = Math.min(28, dimensions.width * 0.07);
   const subtitleFontSize = Math.min(16, dimensions.width * 0.041);
   const subtitleLineHeight = Math.min(20, dimensions.width * 0.052);
 
@@ -131,27 +130,14 @@ export default function BoardingScreen() {
           <Video
             ref={videoRef}
             source={{ uri: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }}
-            style={{ 
-              width: dimensions.width, 
-              height: dimensions.height 
-            }}
+            style={{ width: dimensions.width, height: dimensions.height }}
             resizeMode="cover"
             shouldPlay={isPlaying}
             onPlaybackStatusUpdate={setStatus}
             useNativeControls={false}
           />
-
           {/* Controls Overlay */}
-          <View style={{ 
-            position: 'absolute', 
-            bottom: 0, 
-            left: 0, 
-            right: 0, 
-            backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-            paddingVertical: 20, 
-            paddingHorizontal: 24 
-          }}>
-            {/* Timeline Slider */}
+          <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', paddingVertical: 20, paddingHorizontal: 24 }}>
             <Slider
               style={{ width: '100%', height: 40, marginBottom: 16 }}
               minimumValue={0}
@@ -162,41 +148,20 @@ export default function BoardingScreen() {
               thumbTintColor="#FFFFFF"
               onSlidingComplete={handleSeek}
             />
-
-            {/* Horizontal Controls with FF/RW */}
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 12 }}>
-              <TouchableOpacity 
-                onPress={handleRewind} 
-                style={{ padding: 8 }}
-              >
+              <TouchableOpacity onPress={handleRewind} style={{ padding: 8 }}>
                 <Ionicons name="play-back" size={24} color="#FFFFFF" />
               </TouchableOpacity>
-
-              <TouchableOpacity 
-                onPress={handlePlayPause} 
-                style={{ padding: 8 }}
-              >
+              <TouchableOpacity onPress={handlePlayPause} style={{ padding: 8 }}>
                 <Ionicons name={isPlaying ? 'pause' : 'play'} size={24} color="#FFFFFF" />
               </TouchableOpacity>
-
-              <TouchableOpacity 
-                onPress={handleStop} 
-                style={{ padding: 8 }}
-              >
+              <TouchableOpacity onPress={handleStop} style={{ padding: 8 }}>
                 <Ionicons name="stop" size={24} color="#FFFFFF" />
               </TouchableOpacity>
-
-              <TouchableOpacity 
-                onPress={handleForward} 
-                style={{ padding: 8 }}
-              >
+              <TouchableOpacity onPress={handleForward} style={{ padding: 8 }}>
                 <Ionicons name="play-forward" size={24} color="#FFFFFF" />
               </TouchableOpacity>
-
-              <TouchableOpacity 
-                onPress={handleFullscreen} 
-                style={{ padding: 8 }}
-              >
+              <TouchableOpacity onPress={handleFullscreen} style={{ padding: 8 }}>
                 <Ionicons name="contract-outline" size={24} color="#FFFFFF" />
               </TouchableOpacity>
             </View>
@@ -211,36 +176,51 @@ export default function BoardingScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 22, paddingTop: 40, paddingBottom: 120, alignItems: 'center' }}>
         
-        {/* Top Row */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 16 }}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={{ alignItems: 'center', justifyContent: 'center' }}>
-            <Ionicons name="arrow-back-outline" size={24} color="#3E0288" />
+        {/* Back Button on Left, Notification + Settings on Right */}
+        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          {/* Back Button */}
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              backgroundColor: '#E5E7EB',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Ionicons name="arrow-back-outline" size={18} color="#3E0288" />
           </TouchableOpacity>
 
-          <View className="flex-row">
+          {/* Right Side Icons */}
+          <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity
               onPress={() => navigation.navigate('SettingsScreen')}
-              className="mr-3 p-2 rounded-full bg-gray-200"
-              style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}
+              style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', marginLeft: 8 }}
             >
-              <Ionicons name="settings-outline" size={20} color="#3E0288" />
+              <Ionicons name="settings-outline" size={18} color="#3E0288" />
             </TouchableOpacity>
-
             <TouchableOpacity
               onPress={() => navigation.navigate('Notification')}
-              className="p-2 rounded-full bg-gray-200"
-              style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}
+              style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', marginLeft: 8 }}
             >
-              <Ionicons name="notifications-outline" size={20} color="#3E0288" />
+              <Ionicons name="notifications-outline" size={18} color="#3E0288" />
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Header Text */}
+        {/* Header */}
+        <View style={{ width: '100%', marginTop: 25, marginBottom: 5 }}>
+          <View style={{ flex: 1 }}>
+            <Text numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.7} style={{ fontWeight: '600', fontSize: headerFontSize, lineHeight: headerFontSize * 1.2, marginBottom: 6, color: '#000' }}>
+              {t('boarding.ourVision')}
+            </Text>
+          </View>
+        </View>
+
+        {/* Subtitle */}
         <View style={{ width: '100%', marginBottom: 24 }}>
-          <Text numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.7} style={{ fontFamily: 'SF Compact Rounded', fontWeight: '600', fontSize: titleFontSize, lineHeight: titleLineHeight, marginBottom: 6, color: '#000' }}>
-            {t('boarding.ourVision')}
-          </Text>
           <Text numberOfLines={4} adjustsFontSizeToFit minimumFontScale={0.8} style={{ fontFamily: 'SF Compact Rounded', fontWeight: '400', fontSize: subtitleFontSize, lineHeight: subtitleLineHeight, color: '#6B7280' }}>
             {t('boarding.subtitle')}
           </Text>
@@ -267,11 +247,7 @@ export default function BoardingScreen() {
           <Video
             ref={videoRef}
             source={{ uri: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }}
-            style={{ 
-              position: 'absolute',
-              width: '100%', 
-              height: '100%' 
-            }}
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
             resizeMode="cover"
             shouldPlay={isPlaying}
             onPlaybackStatusUpdate={setStatus}
@@ -295,19 +271,15 @@ export default function BoardingScreen() {
             <TouchableOpacity onPress={handleRewind} style={{ padding: 8 }}>
               <Ionicons name="play-back" size={20} color="#FFFFFF" />
             </TouchableOpacity>
-
             <TouchableOpacity onPress={handlePlayPause} style={{ padding: 8 }}>
               <Ionicons name={isPlaying ? 'pause' : 'play'} size={20} color="#FFFFFF" />
             </TouchableOpacity>
-
             <TouchableOpacity onPress={handleStop} style={{ padding: 8 }}>
               <Ionicons name="stop" size={20} color="#FFFFFF" />
             </TouchableOpacity>
-
             <TouchableOpacity onPress={handleForward} style={{ padding: 8 }}>
               <Ionicons name="play-forward" size={20} color="#FFFFFF" />
             </TouchableOpacity>
-
             <TouchableOpacity onPress={handleFullscreen} style={{ padding: 8 }}>
               <Ionicons name="expand-outline" size={20} color="#FFFFFF" />
             </TouchableOpacity>
@@ -322,14 +294,7 @@ export default function BoardingScreen() {
         </TouchableOpacity>
       </ScrollView>
 
-      <View
-        style={{
-          position: 'absolute',
-          bottom: insets.bottom + 10,
-          width: '100%',
-          alignItems: 'center',
-        }}
-      >
+      <View style={{ position: 'absolute', bottom: insets.bottom + 10, width: '100%', alignItems: 'center' }}>
         <BottomNav
           navLeftMargin={Dimensions.get('window').width * 0.05}
           navWidth={Dimensions.get('window').width * 0.9}
@@ -337,7 +302,6 @@ export default function BoardingScreen() {
           navBorderRadius={30}
         />
       </View>
-
     </SafeAreaView>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +9,8 @@ export default function ResultScreen() {
   const { t } = useTranslation();
   const route = useRoute();
   const navigation = useNavigation();
+  const { width } = Dimensions.get('window');
+  const headerFontSize = Math.min(28, width * 0.07);
   const { questions = [], answers = [], correctAnswers = [] } = route.params || {};
 
   // Colors
@@ -67,17 +69,64 @@ export default function ResultScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F9FAFB' }}>
       <ScrollView contentContainerStyle={{ padding: 20, paddingTop: 28 }}>
 
-        {/* Header */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={24} color={primary} />
+        {/* Back button left, Settings + Notification right */}
+        <View style={{
+            
+            paddingTop: 20,flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          {/* Left: Back */}
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+                
+              width: 32,
+              height: 32,
+              borderRadius: 8,
+              backgroundColor: '#E5E7EB',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Ionicons name="arrow-back-outline" size={18} color={primary} />
           </TouchableOpacity>
 
-          <Text style={{ fontSize: 18, fontWeight: '700', color: black }}>
+          {/* Right: Settings + Notification */}
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SettingsScreen')}
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: 8,
+                backgroundColor: '#E5E7EB',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 8,
+              }}
+            >
+              <Ionicons name="settings-outline" size={18} color={primary} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Notification')}
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: 8,
+                backgroundColor: '#E5E7EB',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 8,
+              }}
+            >
+              <Ionicons name="notifications-outline" size={18} color={primary} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Header */}
+        <View style={{ marginTop: 25, marginBottom: 24 }}>
+          <Text style={{ fontSize: headerFontSize, fontWeight: '600', color: black }}>
             {t('result.resultSummary')}
           </Text>
-
-          <View style={{ width: 24 }} />
         </View>
 
         {/* Stats */}
@@ -163,7 +212,7 @@ export default function ResultScreen() {
                 </Text>
               </View>
 
-              {/* Correct Answer (shown for wrong + skipped) */}
+              {/* Correct Answer */}
               {!isCorrect && (
                 <View
                   style={{
