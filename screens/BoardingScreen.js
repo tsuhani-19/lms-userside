@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'; 
 import { View, Text, TouchableOpacity, ScrollView, Dimensions, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -14,6 +14,7 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 export default function BoardingScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const [userData, setUserData] = useState(null);
   const [userName, setUserName] = useState(t('common.user'));
 
@@ -321,10 +322,21 @@ export default function BoardingScreen() {
         </TouchableOpacity>
       </ScrollView>
 
-      <View className="absolute bottom-7 w-full items-center">
-  {/* Your BottomNav component goes here */}
-  <BottomNav navLeftMargin={20} navWidth={360} navHeight={60} navBorderRadius={30} />
-</View>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: insets.bottom + 10,
+          width: '100%',
+          alignItems: 'center',
+        }}
+      >
+        <BottomNav
+          navLeftMargin={Dimensions.get('window').width * 0.05}
+          navWidth={Dimensions.get('window').width * 0.9}
+          navHeight={60}
+          navBorderRadius={30}
+        />
+      </View>
 
     </SafeAreaView>
   );

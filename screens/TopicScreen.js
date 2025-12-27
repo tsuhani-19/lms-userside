@@ -5,10 +5,13 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Platform,
+  StatusBar,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
@@ -17,6 +20,9 @@ const TopicScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
+  const insets = useSafeAreaInsets();
+  const statusBarHeight =
+    Platform.OS === 'android' ? StatusBar.currentHeight || 0 : insets.top;
   const sectionName = route.params?.sectionName || `${t('common.section')} 1`;
 
   const topics = [
@@ -37,8 +43,8 @@ const TopicScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingHorizontal: width * 0.05,
-          paddingTop: 80,
-          paddingBottom: 40,
+          paddingTop: statusBarHeight + 20,
+          paddingBottom: insets.bottom + 40,
         }}
       >
         {/* Header */}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,6 +14,7 @@ const { width } = Dimensions.get('window');
 export default function QuizScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
 
   const primaryColor = '#3E0288';
   const primaryLight = '#5C28A3';
@@ -122,9 +123,9 @@ export default function QuizScreen() {
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView
         contentContainerStyle={{
-          paddingHorizontal: 22,
+          paddingHorizontal: width * 0.05,
           paddingTop: 20,
-          paddingBottom: 120,
+          paddingBottom: insets.bottom + 80,
         }}
       >
         {/* 🔝 HEADER */}
@@ -145,30 +146,30 @@ export default function QuizScreen() {
             <TouchableOpacity
               onPress={() => navigation.navigate('SettingsScreen')}
               style={{
-                width: 38,
-                height: 38,
-                borderRadius: 19,
+                width: 40,
+                height: 40,
+                borderRadius: 12,
                 backgroundColor: '#E5E7EB',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginRight: 10,
+                marginRight: 8,
               }}
             >
-              <Ionicons name="settings-outline" size={22} color={primaryColor} />
+              <Ionicons name="settings-outline" size={20} color={primaryColor} />
             </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => navigation.navigate('Notification')}
               style={{
-                width: 38,
-                height: 38,
-                borderRadius: 19,
+                width: 40,
+                height: 40,
+                borderRadius: 12,
                 backgroundColor: '#E5E7EB',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <Ionicons name="notifications-outline" size={22} color={primaryColor} />
+              <Ionicons name="notifications-outline" size={20} color={primaryColor} />
             </TouchableOpacity>
           </View>
         </View>

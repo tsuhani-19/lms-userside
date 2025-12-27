@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import BottomNav from '../components/BottomNavigation';
@@ -11,6 +11,7 @@ const { width } = Dimensions.get('window');
 export default function UserProgressScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
 
   const headerTopMargin = 50;
   const headerLeftMargin = 22;
@@ -27,9 +28,9 @@ export default function UserProgressScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView
         contentContainerStyle={{
-          paddingHorizontal: headerLeftMargin,
+          paddingHorizontal: width * 0.05,
           paddingTop: headerTopMargin,
-          paddingBottom: 120,
+          paddingBottom: insets.bottom + 80,
         }}
       >
 
@@ -56,7 +57,7 @@ export default function UserProgressScreen() {
                 width: 40,
                 height: 40,
                 marginRight: 8,
-                borderRadius: 20,
+                borderRadius: 12,
                 backgroundColor: '#E5E7EB',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -70,7 +71,7 @@ export default function UserProgressScreen() {
               style={{
                 width: 40,
                 height: 40,
-                borderRadius: 20,
+                borderRadius: 12,
                 backgroundColor: '#E5E7EB',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -223,8 +224,20 @@ export default function UserProgressScreen() {
       </ScrollView>
 
       {/* BOTTOM NAV */}
-      <View style={{ position: 'absolute', bottom: 28, width: '100%', alignItems: 'center' }}>
-        <BottomNav navLeftMargin={20} navWidth={360} navHeight={60} navBorderRadius={30} />
+      <View
+        style={{
+          position: 'absolute',
+          bottom: insets.bottom + 10,
+          width: '100%',
+          alignItems: 'center',
+        }}
+      >
+        <BottomNav
+          navLeftMargin={width * 0.05}
+          navWidth={width * 0.9}
+          navHeight={60}
+          navBorderRadius={30}
+        />
       </View>
     </SafeAreaView>
   );

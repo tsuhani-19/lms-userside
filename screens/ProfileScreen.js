@@ -18,7 +18,7 @@ export default function ProfileScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation(); // ✅ Move inside component
 
-  const CARD_WIDTH = 406;
+  const CARD_WIDTH = 420;
   const CARD_HEIGHT = 653;
   const CARD_TOP = 220;
   const CARD_RADIUS = 60;
@@ -101,6 +101,7 @@ export default function ProfileScreen() {
           borderTopRightRadius: CARD_RADIUS * scaleWidth,
           paddingHorizontal: 20 * scaleWidth,
           paddingTop: 40 * scaleHeight,
+          overflow: 'hidden',
         }}
       >
         {/* Profile Image */}

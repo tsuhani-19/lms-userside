@@ -67,7 +67,7 @@ export default function GotoScreen() {
           top: scaleHeight(520),
           left: scaleWidth(-3),
           width: scaleWidth(398),
-          height: scaleHeight(350),
+          height: scaleHeight(390),
           backgroundColor: '#ffffff',
           borderTopLeftRadius: scaleWidth(40),
           borderTopRightRadius: scaleWidth(40),
@@ -100,7 +100,7 @@ export default function GotoScreen() {
         <TouchableOpacity
           style={{
             position: 'absolute',
-            bottom: scaleHeight(75),
+            bottom: scaleHeight(125),
             left: scaleWidth((398 - 86) / 2 - 3),
             width: scaleWidth(86),
             height: scaleWidth(86),
