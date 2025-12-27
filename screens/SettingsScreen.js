@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,15 +6,19 @@ import {
   Dimensions,
   Switch,
   StyleSheet,
+  ScrollView,
+  Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import i18n from './i18n';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function SettingScreen({ navigation }) {
+  const { t } = useTranslation();
   const CARD_RADIUS = 60;
-
   const scaleWidth = SCREEN_WIDTH / 414;
   const scaleHeight = SCREEN_HEIGHT / 896;
 
@@ -22,9 +26,49 @@ export default function SettingScreen({ navigation }) {
   const [emailEnabled, setEmailEnabled] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
+  const [languageDropdownVisible, setLanguageDropdownVisible] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language === 'ja' ? '日本語' : 'English');
+
+  useEffect(() => {
+    // Update selected language when i18n language changes
+    setSelectedLanguage(i18n.language === 'ja' ? '日本語' : 'English');
+  }, [i18n.language]);
+
   const togglePush = () => setPushEnabled(prev => !prev);
   const toggleEmail = () => setEmailEnabled(prev => !prev);
   const toggleDark = () => setDarkMode(prev => !prev);
+
+  const languages = [
+    { code: 'en', name: 'English' },
+    { code: 'ja', name: '日本語' }
+  ];
+
+  const handleLanguageChange = async (langCode, langName) => {
+    try {
+      await i18n.changeLanguage(langCode);
+      setSelectedLanguage(langName);
+      setLanguageDropdownVisible(false);
+    } catch (error) {
+      console.error('Error changing language:', error);
+    }
+  };
+
+  // Animation for dropdown
+  const [dropdownAnim] = useState(new Animated.Value(0));
+
+  const toggleDropdown = () => {
+    setLanguageDropdownVisible(prev => !prev);
+    Animated.timing(dropdownAnim, {
+      toValue: languageDropdownVisible ? 0 : 1,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const dropdownHeight = dropdownAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, languages.length * 42], // height per item
+  });
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#3e0288' }}>
@@ -52,7 +96,10 @@ export default function SettingScreen({ navigation }) {
             <TouchableOpacity style={{ marginRight: 20 }}>
               <Ionicons name="settings-outline" size={22} color="#fff" />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+            onPress={() => navigation.navigate('Notification')}
+            
+            >
               <Ionicons name="notifications-outline" size={22} color="#fff" />
             </TouchableOpacity>
           </View>
@@ -66,7 +113,7 @@ export default function SettingScreen({ navigation }) {
               color: '#fff',
             }}
           >
-            Setting
+            {t('settings.setting')}
           </Text>
           <Text
             style={{
@@ -75,13 +122,13 @@ export default function SettingScreen({ navigation }) {
               marginTop: 1,
             }}
           >
-            Choose Your Preference
+            {t('settings.choosePreference')}
           </Text>
         </View>
       </View>
 
-      {/* WHITE CARD CONTENT – full height to bottom */}
-      <View
+      {/* WHITE CARD CONTENT */}
+      <ScrollView
         style={{
           position: 'absolute',
           top: 220 * scaleHeight,
@@ -101,115 +148,103 @@ export default function SettingScreen({ navigation }) {
         }}
       >
         {/* Notification Preferences */}
-        <SectionTitle label="Notification Preferences" />
-
+        <SectionTitle label={t('settings.notificationPreferences')} />
         <SettingsRow
           icon="notifications-outline"
           iconBg="#F3E8FF"
-          label="Push Notifications"
-          rightComponent={
-            <PurpleSwitch value={pushEnabled} onValueChange={togglePush} />
-          }
+          label={t('settings.pushNotifications')}
+          rightComponent={<PurpleSwitch value={pushEnabled} onValueChange={togglePush} />}
         />
-
         <SettingsRow
           icon="mail-outline"
           iconBg="#F3E8FF"
-          label="Email Notifications"
-          rightComponent={
-            <PurpleSwitch value={emailEnabled} onValueChange={toggleEmail} />
-          }
+          label={t('settings.emailNotifications')}
+          rightComponent={<PurpleSwitch value={emailEnabled} onValueChange={toggleEmail} />}
         />
 
         {/* App Preferences */}
-        <SectionTitle label="App Preferences" style={{ marginTop: 26 }} />
+        <SectionTitle label={t('settings.appPreferences')} style={{ marginTop: 26 }} />
 
-        <SettingsRow
-          icon="language-outline"
-          iconBg="#F3E8FF"
-          label="Language"
-          rightComponent={
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.secondaryText}>English</Text>
-              <Ionicons
-                name="chevron-forward"
-                size={18}
-                color="#9CA3AF"
-                style={{ marginLeft: 4 }}
-              />
-            </View>
-          }
-        />
+        {/* Language Row */}
+        <View style={{ marginBottom: 12 }}>
+          <TouchableOpacity onPress={toggleDropdown}>
+            <SettingsRow
+              icon="language-outline"
+              iconBg="#F3E8FF"
+              label={t('settings.language')}
+              rightComponent={
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.secondaryText}>{selectedLanguage}</Text>
+                  <Ionicons
+                    name={languageDropdownVisible ? 'chevron-up' : 'chevron-down'}
+                    size={18}
+                    color="#9CA3AF"
+                    style={{ marginLeft: 4 }}
+                  />
+                </View>
+              }
+            />
+          </TouchableOpacity>
+
+          {/* Right-aligned dropdown list */}
+          {languageDropdownVisible && (
+            <Animated.View style={[styles.rightDropdownContainer, { height: dropdownHeight }]}>
+              {languages.map(lang => (
+                <TouchableOpacity
+                  key={lang.code}
+                  style={styles.rightDropdownItem}
+                  onPress={() => {
+                    handleLanguageChange(lang.code, lang.name);
+                  }}
+                >
+                  <Text style={styles.dropdownText}>{lang.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </Animated.View>
+          )}
+        </View>
 
         <SettingsRow
           icon="moon-outline"
           iconBg="#F3E8FF"
-          label="Dark Mode"
-          rightComponent={
-            <PurpleSwitch value={darkMode} onValueChange={toggleDark} />
-          }
+          label={t('settings.darkMode')}
+          rightComponent={<PurpleSwitch value={darkMode} onValueChange={toggleDark} />}
         />
 
         {/* Account Settings */}
-        <SectionTitle label="Account Settings" style={{ marginTop: 26 }} />
-
-        {/* Change Password row -> navigate to ChangePassword stack screen */}
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => navigation.navigate('ChangePassword')}
-        >
+        <SectionTitle label={t('settings.accountSettings')} style={{ marginTop: 26 }} />
+        <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('ChangePassword')}>
           <SettingsRow
             icon="key-outline"
             iconBg="#F3E8FF"
-            label="Change Password"
-            rightComponent={
-              <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
-            }
+            label={t('settings.changePassword')}
+            rightComponent={<Ionicons name="chevron-forward" size={18} color="#9CA3AF" />}
           />
         </TouchableOpacity>
-
         <SettingsRow
           icon="help-circle-outline"
           iconBg="#F3E8FF"
-          label="Help & Support"
-          rightComponent={
-            <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
-          }
+          label={t('settings.helpSupport')}
+          rightComponent={<Ionicons name="chevron-forward" size={18} color="#9CA3AF" />}
         />
-
-        {/* Log Out row – same styling as others */}
-        <TouchableOpacity
-          style={{ marginTop: 6 }}
-          activeOpacity={0.7}
-          onPress={() => {}}
-        >
+        <TouchableOpacity style={{ marginTop: 6 }} activeOpacity={0.7} onPress={() => {}}>
           <SettingsRow
             icon="log-out-outline"
             iconBg="#F3E8FF"
-            label="Log Out"
-            rightComponent={
-              <Ionicons name="chevron-forward" size={18} color="#9CA3AF" />
-            }
+            label={t('settings.logOut')}
+            rightComponent={<Ionicons name="chevron-forward" size={18} color="#9CA3AF" />}
           />
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 /* Reusable components */
-
 const SectionTitle = ({ label, style }) => (
   <Text
     style={[
-      {
-        fontSize: 14,
-        color: '#9CA3AF',
-        fontWeight: 400,
-        letterSpacing: 0.6,
-        marginBottom: 5,
-        marginTop: 12,
-      },
+      { fontSize: 14, color: '#9CA3AF', fontWeight: 400, letterSpacing: 0.6, marginBottom: 5, marginTop: 12 },
       style,
     ]}
   >
@@ -217,34 +252,10 @@ const SectionTitle = ({ label, style }) => (
   </Text>
 );
 
-const SettingsRow = ({
-  icon,
-  iconBg,
-  iconColor = '#6D28D9',
-  label,
-  rightComponent,
-  labelStyle,
-}) => (
-  <View
-    style={{
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingVertical: 10,
-    }}
-  >
+const SettingsRow = ({ icon, iconBg, iconColor = '#6D28D9', label, rightComponent, labelStyle }) => (
+  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 10 }}>
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <View
-        style={{
-          width: 32,
-          height: 32,
-          borderRadius: 10,
-          backgroundColor: iconBg,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginRight: 14,
-        }}
-      >
+      <View style={{ width: 32, height: 32, borderRadius: 10, backgroundColor: iconBg, justifyContent: 'center', alignItems: 'center', marginRight: 14 }}>
         <Ionicons name={icon} size={18} color={iconColor} />
       </View>
       <Text style={[styles.primaryText, labelStyle]}>{label}</Text>
@@ -264,14 +275,31 @@ const PurpleSwitch = ({ value, onValueChange }) => (
 );
 
 const styles = StyleSheet.create({
-  primaryText: {
+  primaryText: { fontSize: 14, color: '#111827', fontWeight: '500' },
+  secondaryText: { fontSize: 13, color: '#6B7280', fontWeight: '500' },
+  rightDropdownContainer: {
+    position: 'absolute',
+    top: 50,
+    right: 0,
+    width: 120,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    paddingVertical: 2,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    zIndex: 1000,
+    overflow: 'hidden',
+  },
+  rightDropdownItem: {
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  dropdownText: {
     fontSize: 14,
     color: '#111827',
-    fontWeight: '500',
-  },
-  secondaryText: {
-    fontSize: 13,
-    color: '#6B7280',
     fontWeight: '500',
   },
 });

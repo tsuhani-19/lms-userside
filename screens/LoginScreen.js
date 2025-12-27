@@ -13,10 +13,12 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 const { width, height } = Dimensions.get('window');
 
 export default function LoginScreen() {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const statusBarHeight =
     Platform.OS === 'android'
@@ -42,10 +44,10 @@ export default function LoginScreen() {
 
     const validationErrors = {};
     if (activeTab === 'Email' && !email)
-      validationErrors.email = 'Email is required';
+      validationErrors.email = t('login.emailRequired');
     if (activeTab === 'Phone' && !phone)
-      validationErrors.phone = 'Phone is required';
-    if (!password) validationErrors.password = 'Password is required';
+      validationErrors.phone = t('login.phoneRequired');
+    if (!password) validationErrors.password = t('login.passwordRequired');
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -56,7 +58,7 @@ export default function LoginScreen() {
 
     setTimeout(() => {
       setLoading(false);
-      setSuccessMessage('Login successful! Navigating...');
+      setSuccessMessage(t('login.loginSuccessful'));
 
       setTimeout(() => {
         navigation.navigate('UserHome');
@@ -86,7 +88,7 @@ export default function LoginScreen() {
           className="text-white text-center font-medium"
           style={{ fontSize: width * 0.09, maxWidth: '90%', marginBottom: 4 }}
         >
-          Welcome Back
+          {t('login.welcomeBack')}
         </Text>
         <Text
           numberOfLines={2}
@@ -99,7 +101,7 @@ export default function LoginScreen() {
             letterSpacing: 0.5,
           }}
         >
-          It's great to see you again. Let's pick up where we left off!
+          {t('login.subtitle')}
         </Text>
       </View>
 
@@ -116,7 +118,7 @@ export default function LoginScreen() {
             marginBottom: spacing * 3,
           }}
         >
-          Log In
+          {t('login.logIn')}
         </Text>
 
         {/* Success Message */}
@@ -159,7 +161,7 @@ export default function LoginScreen() {
                 fontWeight: activeTab === 'Email' ? 'bold' : 'normal',
               }}
             >
-              Email
+              {t('login.emailTab')}
             </Text>
           </TouchableOpacity>
 
@@ -182,7 +184,7 @@ export default function LoginScreen() {
                 fontWeight: activeTab === 'Phone' ? 'bold' : 'normal',
               }}
             >
-              Phone
+              {t('login.phoneTab')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -191,14 +193,14 @@ export default function LoginScreen() {
         {activeTab === 'Email' ? (
           <View className="relative" style={{ marginBottom: spacing * 2.2 }}>
             <Text className="text-[10px] font-semibold mb-1.5 text-[#1a1a1a]">
-              Email Address
+              {t('login.emailAddress')}
             </Text>
             <TextInput
               className={`border rounded-lg px-[15px] pr-[45px] bg-[#F8F8F8] w-full ${
                 errors.email ? 'border-red-500' : 'border-[#E0E0E0]'
               }`}
               style={{ height: inputHeight }}
-              placeholder="Enter your email"
+              placeholder={t('login.enterEmail')}
               value={email}
               onChangeText={setEmail}
             />
@@ -211,14 +213,14 @@ export default function LoginScreen() {
         ) : (
           <View className="relative" style={{ marginBottom: spacing * 2.2 }}>
             <Text className="text-[10px] font-semibold mb-1.5 text-[#1a1a1a]">
-              Phone Number
+              {t('login.phoneNumber')}
             </Text>
             <TextInput
               className={`border rounded-lg px-[15px] pr-[45px] bg-[#F8F8F8] w-full ${
                 errors.phone ? 'border-red-500' : 'border-[#E0E0E0]'
               }`}
               style={{ height: inputHeight }}
-              placeholder="Enter your phone"
+              placeholder={t('login.enterPhone')}
               value={phone}
               onChangeText={setPhone}
             />
@@ -233,14 +235,14 @@ export default function LoginScreen() {
         {/* Password */}
         <View className="relative" style={{ marginBottom: spacing * 2.2 }}>
           <Text className="text-[10px] font-semibold mb-1.5 text-[#1a1a1a]">
-            Password
+            {t('login.password')}
           </Text>
           <TextInput
             className={`border rounded-lg px-[15px] pr-[45px] bg-[#F8F8F8] w-full ${
               errors.password ? 'border-red-500' : 'border-[#E0E0E0]'
             }`}
             style={{ height: inputHeight }}
-            placeholder="Enter your password"
+            placeholder={t('login.enterPassword')}
             value={password}
             onChangeText={setPassword}
             secureTextEntry={!showPassword}
@@ -287,7 +289,7 @@ export default function LoginScreen() {
                 <Ionicons name="checkmark" size={14} color="#fff" />
               )}
             </View>
-            <Text className="ml-2 text-sm">Remember Me</Text>
+            <Text className="ml-2 text-sm">{t('login.rememberMe')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -300,7 +302,7 @@ export default function LoginScreen() {
                 color: '#3E0288',
               }}
             >
-              Forgot Password?
+              {t('login.forgotPassword')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -320,17 +322,17 @@ export default function LoginScreen() {
           {loading ? (
             <ActivityIndicator color="#FFFFFF" size="small" />
           ) : (
-            <Text className="text-white font-bold text-base">Log in</Text>
+            <Text className="text-white font-bold text-base">{t('login.logInButton')}</Text>
           )}
         </TouchableOpacity>
 
         {/* Sign Up */}
         <View className="flex-row justify-center">
           <Text className="text-[#999] text-sm">
-            Don't have an account?{' '}
+            {t('login.dontHaveAccount')}{' '}
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text className="text-[#3E0288] font-bold text-sm">Sign Up</Text>
+            <Text className="text-[#3E0288] font-bold text-sm">{t('login.signUp')}</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import './screens/i18n'; // Initialize i18n
 import GotoScreen from './screens/GotoScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
@@ -16,6 +17,8 @@ import SettingsScreen from './screens/SettingsScreen';
 import ChangePassword from './screens/ChangePassword';
 import NotificationScreen from './screens/NotificationScreen';
 import PerformanceScreen from './screens/PerformanceScreen';
+import TopicScreen from './screens/TopicScreen';
+import ResultScreen from './screens/ResultScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -39,6 +42,8 @@ export default function App() {
           <Stack.Screen name='ChangePassword' component={ChangePassword} />
           <Stack.Screen name='Notification' component={NotificationScreen} />
           <Stack.Screen name='PerformanceScreen' component={PerformanceScreen }/>
+          <Stack.Screen name='TopicScreen' component={TopicScreen} />
+          <Stack.Screen name='ResultScreen' component={ResultScreen} />
           
         </Stack.Navigator>
       </NavigationContainer>

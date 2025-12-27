@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Dimensions, Platform, StatusBa
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { registerAPI } from '../services/api';
 import { validateEmail, validatePassword } from '../utils/validation';
@@ -13,6 +14,7 @@ const { width, height } = Dimensions.get('window');
 // RegisterScreen component
 
 export default function RegisterScreen({ navigation }) {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const statusBarHeight = Platform.OS === 'android' ? (StatusBar.currentHeight || 0) : insets.top;
   const [fullName, setFullName] = useState('');
@@ -41,7 +43,7 @@ export default function RegisterScreen({ navigation }) {
     const validationErrors = {};
     
     if (!fullName || fullName.trim().length === 0) {
-      validationErrors.fullName = 'Full name is required';
+      validationErrors.fullName = t('register.fullNameRequired');
     }
     
     const emailError = validateEmail(email);
@@ -55,9 +57,9 @@ export default function RegisterScreen({ navigation }) {
     }
     
     if (!confirmPassword) {
-      validationErrors.confirmPassword = 'Please confirm your password';
+      validationErrors.confirmPassword = t('register.pleaseConfirmPassword');
     } else if (password !== confirmPassword) {
-      validationErrors.confirmPassword = 'Passwords do not match';
+      validationErrors.confirmPassword = t('register.passwordsDoNotMatch');
     }
     
     // If validation fails, show errors and return
@@ -119,7 +121,7 @@ export default function RegisterScreen({ navigation }) {
           className="text-white text-center font-medium"
           style={{ fontSize: width * 0.09, maxWidth: '90%', marginBottom: 2, marginTop:20 }}
         >
-          Get Started
+          {t('register.getStarted')}
         </Text>
         <Text 
           numberOfLines={2} 
@@ -127,7 +129,7 @@ export default function RegisterScreen({ navigation }) {
           className="text-white text-center font-normal"
           style={{ fontSize: width * 0.028, maxWidth: '80%', lineHeight: width * 0.035, letterSpacing: 0.5 }}
         >
-          Create your account and join us on this amazing journey!
+          {t('register.subtitle')}
         </Text>
       </View>
 
@@ -139,7 +141,7 @@ export default function RegisterScreen({ navigation }) {
           className="text-center font-normal"
           style={{ fontSize: width * 0.065, lineHeight: width * 0.075, marginBottom: spacing * 2 }}
         >
-          Sign Up
+          {t('register.signUp')}
         </Text>
 
         {/* API Error Banner */}
@@ -158,14 +160,14 @@ export default function RegisterScreen({ navigation }) {
         {/* Full Name Input */}
         <View className="relative" style={{ marginBottom: spacing * 1.8 }}>
           <Text className="text-[10px] font-semibold mb-1 text-[#1a1a1a]">
-            Full Name
+            {t('register.fullName')}
           </Text>
           <TextInput
             className={`border rounded-lg px-[15px] bg-[#F8F8F8] w-full ${
               errors.fullName ? 'border-red-500' : 'border-[#E0E0E0]'
             }`}
             style={{ height: inputHeight }}
-            placeholder="Enter your Full Name"
+            placeholder={t('register.enterFullName')}
             value={fullName}
             onChangeText={(text) => {
               setFullName(text);
@@ -183,7 +185,7 @@ export default function RegisterScreen({ navigation }) {
         {/* Email Input */}
         <View className="relative" style={{ marginBottom: spacing * 1.8 }}>
           <Text className="text-[10px] font-semibold mb-1 text-[#1a1a1a]">
-            Email Address
+            {t('register.emailAddress')}
           </Text>
           <View className="relative">
             <TextInput
@@ -191,7 +193,7 @@ export default function RegisterScreen({ navigation }) {
                 errors.email ? 'border-red-500' : 'border-[#E0E0E0]'
               }`}
               style={{ height: inputHeight }}
-              placeholder="Enter your email address"
+              placeholder={t('register.enterEmail')}
               value={email}
               onChangeText={(text) => {
                 setEmail(text);
@@ -215,7 +217,7 @@ export default function RegisterScreen({ navigation }) {
         {/* Password Input */}
         <View className="relative" style={{ marginBottom: spacing * 1.8 }}>
           <Text className="text-[10px] font-semibold mb-1 text-[#1a1a1a]">
-            Password
+            {t('register.password')}
           </Text>
           <View className="relative">
             <TextInput
@@ -223,7 +225,7 @@ export default function RegisterScreen({ navigation }) {
                 errors.password ? 'border-red-500' : 'border-[#E0E0E0]'
               }`}
               style={{ height: inputHeight }}
-              placeholder="Create Password"
+              placeholder={t('register.createPassword')}
               value={password}
               onChangeText={(text) => {
                 setPassword(text);
@@ -261,7 +263,7 @@ export default function RegisterScreen({ navigation }) {
         {/* Confirm Password Input */}
         <View className="relative" style={{ marginBottom: spacing * 2 }}>
           <Text className="text-[10px] font-semibold mb-1 text-[#1a1a1a]">
-            Confirm Password
+            {t('register.confirmPassword')}
           </Text>
           <View className="relative">
             <TextInput
@@ -269,7 +271,7 @@ export default function RegisterScreen({ navigation }) {
                 errors.confirmPassword ? 'border-red-500' : 'border-[#E0E0E0]'
               }`}
               style={{ height: inputHeight }}
-              placeholder="Confirm Your Password"
+              placeholder={t('register.confirmYourPassword')}
               value={confirmPassword}
               onChangeText={(text) => {
                 setConfirmPassword(text);
@@ -315,22 +317,22 @@ export default function RegisterScreen({ navigation }) {
           {loading ? (
             <ActivityIndicator color="#FFFFFF" size="small" />
           ) : (
-            <Text className="text-white font-bold text-base">Sign Up</Text>
+            <Text className="text-white font-bold text-base">{t('register.signUp')}</Text>
           )}
         </TouchableOpacity>
 
         {/* Sign In Link */}
         <View className="flex-row justify-center" style={{ marginBottom: spacing * 1.5, paddingVertical: 1 }}>
-          <Text className="text-[#999] text-sm">Already have an account? </Text>
+          <Text className="text-[#999] text-sm">{t('register.alreadyHaveAccount')} </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text className="text-[#3E0288] font-bold text-sm">Log In</Text>
+            <Text className="text-[#3E0288] font-bold text-sm">{t('register.logIn')}</Text>
           </TouchableOpacity>
         </View>
 
         {/* OR Divider */}
         <View className="flex-row items-center" style={{ marginVertical: spacing * 1 }}>
           <View className="flex-1 h-[1px] bg-[#E0E0E0]" />
-          <Text className="mx-2.5 text-[#999] text-xs">or</Text>
+          <Text className="mx-2.5 text-[#999] text-xs">{t('register.or')}</Text>
           <View className="flex-1 h-[1px] bg-[#E0E0E0]" />
         </View>
 
@@ -340,7 +342,7 @@ export default function RegisterScreen({ navigation }) {
           style={{ paddingVertical: buttonPadding * 0.8, marginBottom: spacing * 1 }}
         >
           <Ionicons name="mail" size={18} color="#EA4335" style={{ marginRight: 6 }} />
-          <Text className="text-sm text-black">Sign up with Gmail</Text>
+          <Text className="text-sm text-black">{t('register.signUpWithGmail')}</Text>
         </TouchableOpacity>
 
         {/* Apple Sign Up Button */}
@@ -349,7 +351,7 @@ export default function RegisterScreen({ navigation }) {
           style={{ paddingVertical: buttonPadding * 0.8, marginBottom: spacing * 1 }}
         >
           <Ionicons name="logo-apple" size={18} color="#000" style={{ marginRight: 6 }} />
-          <Text className="text-sm text-black">Sign up with Apple</Text>
+          <Text className="text-sm text-black">{t('register.signUpWithApple')}</Text>
         </TouchableOpacity>
       </View>
     </View>

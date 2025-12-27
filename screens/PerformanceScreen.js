@@ -3,11 +3,13 @@ import { View, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import BottomNav from '../components/BottomNavigation';
 
 const { width } = Dimensions.get('window');
 
 export default function UserProgressScreen() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const headerTopMargin = 50;
@@ -17,8 +19,12 @@ export default function UserProgressScreen() {
   const cardHeight = 89;
   const cardBorderRadius = 23;
 
+  // Quiz data
+  const quizScore = 95;
+  const totalScore = 100;
+
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: headerLeftMargin,
@@ -45,6 +51,7 @@ export default function UserProgressScreen() {
 
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity
+              onPress={() => navigation.navigate('SettingsScreen')}
               style={{
                 width: 40,
                 height: 40,
@@ -59,6 +66,7 @@ export default function UserProgressScreen() {
             </TouchableOpacity>
 
             <TouchableOpacity
+              onPress={() => navigation.navigate('Notification')}
               style={{
                 width: 40,
                 height: 40,
@@ -73,10 +81,11 @@ export default function UserProgressScreen() {
           </View>
         </View>
 
+        {/* TITLE */}
         <View style={{ marginBottom: 16 }}>
-          <Text style={{ fontSize: 22, fontWeight: '700' }}>Performance Summary</Text>
+          <Text style={{ fontSize: 22, fontWeight: '700' }}>{t('performance.performanceSummary')}</Text>
           <Text style={{ fontSize: 16, color: '#6B7280' }}>
-            Company vision & mission 45 mins
+            {t('performance.subtitle')}
           </Text>
         </View>
 
@@ -94,14 +103,14 @@ export default function UserProgressScreen() {
           }}
         >
           <Text style={{ fontSize: 22, fontWeight: '500', color: 'white' }}>
-            Vision & Mission Completed
+            {t('performance.visionMissionCompleted')}
           </Text>
           <Text style={{ fontSize: 14, color: '#D1D5DB' }}>
-            Completed on Nov 24, 2025
+            {t('performance.completedOn')} Nov 24, 2025
           </Text>
         </View>
 
-        {/* ✅ VIDEO ACTIVITY CARD */}
+        {/* VIDEO ACTIVITY CARD */}
         <View
           style={{
             backgroundColor: '#FFFFFF',
@@ -109,16 +118,18 @@ export default function UserProgressScreen() {
             padding: 16,
             marginBottom: 16,
             elevation: 3,
+            borderWidth: 1,
+            borderColor: '#F3F4F6',
           }}
         >
           <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
-            Video Activity
+            {t('performance.videoActivity')}
           </Text>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Ionicons name="play-circle-outline" size={18} color="#6B7280" />
-              <Text style={{ marginLeft: 6, fontSize: 14 }}>Quiz Video</Text>
+              <Text style={{ marginLeft: 6, fontSize: 14 }}>{t('performance.quizVideo')}</Text>
             </View>
 
             <View
@@ -130,7 +141,7 @@ export default function UserProgressScreen() {
               }}
             >
               <Text style={{ fontSize: 12, color: '#16A34A', fontWeight: '600' }}>
-                Completed
+                {t('performance.completed')}
               </Text>
             </View>
           </View>
@@ -138,55 +149,58 @@ export default function UserProgressScreen() {
           <View style={{ height: 1, backgroundColor: '#E5E7EB', marginVertical: 10 }} />
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 }}>
-            <Text style={{ fontSize: 13, color: '#6B7280' }}>Last Watched</Text>
+            <Text style={{ fontSize: 13, color: '#6B7280' }}>{t('performance.lastWatched')}</Text>
             <Text style={{ fontSize: 13 }}>Nov 24, 2025</Text>
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 }}>
-            <Text style={{ fontSize: 13, color: '#6B7280' }}>Total Videos</Text>
-            <Text style={{ fontSize: 13 }}>1 video</Text>
+            <Text style={{ fontSize: 13, color: '#6B7280' }}>{t('performance.totalVideos')}</Text>
+            <Text style={{ fontSize: 13 }}>1 {t('performance.video')}</Text>
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={{ fontSize: 13, color: '#6B7280' }}>Duration</Text>
+            <Text style={{ fontSize: 13, color: '#6B7280' }}>{t('performance.duration')}</Text>
             <Text style={{ fontSize: 13 }}>30 mins</Text>
           </View>
         </View>
 
-        {/* ✅ QUIZ RESULT CARD */}
+        {/* QUIZ RESULT CARD */}
         <View
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: 12,
             padding: 16,
+            marginBottom: 16,
             elevation: 3,
+            borderWidth: 1,
+            borderColor: '#F3F4F6',
           }}
         >
           <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
-            Quiz Result
+            {t('performance.quizResult')}
           </Text>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
             <View>
-              <Text style={{ fontSize: 13, color: '#6B7280' }}>Final Score</Text>
-              <Text style={{ fontSize: 13, color: '#6B7280' }}>Passing Score</Text>
+              <Text style={{ fontSize: 13, color: '#6B7280' }}>{t('performance.finalScore')}</Text>
+              <Text style={{ fontSize: 13, color: '#6B7280' }}>{t('performance.passingScore')}</Text>
             </View>
 
             <Text style={{ fontSize: 20, fontWeight: '700', color: '#16A34A' }}>
-              95/100
+              {quizScore}/{totalScore}
             </Text>
           </View>
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <View>
-              <Text style={{ fontSize: 13, color: '#6B7280' }}>Attempt Used</Text>
+              <Text style={{ fontSize: 13, color: '#6B7280' }}>{t('performance.attemptUsed')}</Text>
               <Text style={{ fontSize: 14 }}>2/3</Text>
             </View>
 
             <View style={{ alignItems: 'flex-end' }}>
-              <Text style={{ fontSize: 13, color: '#6B7280' }}>STATUS</Text>
+              <Text style={{ fontSize: 13, color: '#6B7280' }}>{t('performance.status')}</Text>
               <Text style={{ fontSize: 14, fontWeight: '600', color: '#16A34A' }}>
-                Passed
+                {t('performance.passed')}
               </Text>
             </View>
           </View>
@@ -197,10 +211,11 @@ export default function UserProgressScreen() {
               paddingVertical: 12,
               borderRadius: 10,
               alignItems: 'center',
+              marginTop: 16,
             }}
           >
             <Text style={{ fontWeight: '600', color: '#3E0288' }}>
-              Retake Quiz
+              {t('performance.retakeQuiz')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -208,7 +223,7 @@ export default function UserProgressScreen() {
       </ScrollView>
 
       {/* BOTTOM NAV */}
-      <View style={{ position: 'absolute', bottom: 30, width: '100%', alignItems: 'center' }}>
+      <View style={{ position: 'absolute', bottom: 28, width: '100%', alignItems: 'center' }}>
         <BottomNav navLeftMargin={20} navWidth={360} navHeight={60} navBorderRadius={30} />
       </View>
     </SafeAreaView>

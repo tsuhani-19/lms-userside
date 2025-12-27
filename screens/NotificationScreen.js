@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { styled } from 'nativewind';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 
 const RNView = styled(View);
@@ -25,34 +26,33 @@ const scaleHeight = SCREEN_HEIGHT / 896;
 const CARD_WIDTH = 353;
 const CARD_HEIGHT = 125;
 
-const notifications = [
-  {
-    id: '1',
-    title: 'Quiz Completed Successfully',
-    description:
-      'You have passed the quiz and can now proceed to the next module.',
-    time: '30 mins ago',
-    type: 'success',
-  },
-  {
-    id: '2',
-    title: 'Quiz Reminder',
-    description:
-      'Please complete the pending quiz to stay on track with your training schedule.',
-    time: '10 mins ago',
-    type: 'warning',
-  },
-  {
-    id: '3',
-    title: 'Next Module Locked',
-    description:
-      'Complete the current quiz to unlock the next training module.',
-    time: '5 mins ago',
-    type: 'lock',
-  },
-];
-
 export default function NotificationScreen({ navigation }) {
+  const { t } = useTranslation();
+  
+  const notifications = [
+    {
+      id: '1',
+      title: t('notifications.quizCompletedSuccessfully'),
+      description: t('notifications.quizCompletedDescription'),
+      time: `30 ${t('notifications.minsAgo')}`,
+      type: 'success',
+    },
+    {
+      id: '2',
+      title: t('notifications.quizReminder'),
+      description: t('notifications.quizReminderDescription'),
+      time: `10 ${t('notifications.minsAgo')}`,
+      type: 'warning',
+    },
+    {
+      id: '3',
+      title: t('notifications.nextModuleLocked'),
+      description: t('notifications.nextModuleLockedDescription'),
+      time: `5 ${t('notifications.minsAgo')}`,
+      type: 'lock',
+    },
+  ];
+
   const renderItem = ({ item }) => <NotificationCard item={item} />;
 
   return (
@@ -71,6 +71,7 @@ export default function NotificationScreen({ navigation }) {
 
         <RNView className="flex-row items-center">
           <RNTouchableOpacity
+          onPress={() => navigation.navigate('SettingsScreen')}
             style={{ marginRight: 16 * scaleWidth }}
             className="justify-center items-center"
           >
@@ -104,7 +105,7 @@ export default function NotificationScreen({ navigation }) {
             fontWeight: '600',
           }}
         >
-          Notifications
+          {t('notifications.title')}
         </RNText>
 
         <RNTouchableOpacity>
@@ -116,7 +117,7 @@ export default function NotificationScreen({ navigation }) {
               fontWeight: '500',
             }}
           >
-            Mark all read
+            {t('notifications.markAllRead')}
           </RNText>
         </RNTouchableOpacity>
       </RNView>

@@ -9,10 +9,15 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function ProfileScreen() {
+  const { t } = useTranslation();
+  const navigation = useNavigation(); // ✅ Move inside component
+
   const CARD_WIDTH = 406;
   const CARD_HEIGHT = 653;
   const CARD_TOP = 220;
@@ -41,15 +46,20 @@ export default function ProfileScreen() {
             marginBottom: 10,
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={22} color="#fff" />
           </TouchableOpacity>
 
           <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity style={{ marginRight: 20 }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SettingsScreen')}
+              style={{ marginRight: 20 }}
+            >
               <Ionicons name="settings-outline" size={22} color="#fff" />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('NotificationScreen')}
+            >
               <Ionicons name="notifications-outline" size={22} color="#fff" />
             </TouchableOpacity>
           </View>
@@ -64,7 +74,7 @@ export default function ProfileScreen() {
               color: '#fff',
             }}
           >
-            Profile
+            {t('profile.title')}
           </Text>
           <Text
             style={{
@@ -73,7 +83,7 @@ export default function ProfileScreen() {
               marginTop: 1,
             }}
           >
-            Employee Information
+            {t('profile.subtitle')}
           </Text>
         </View>
       </View>
@@ -123,17 +133,17 @@ export default function ProfileScreen() {
                 fontWeight: '500',
               }}
             >
-              Change Photo
+              {t('profile.changePhoto')}
             </Text>
           </TouchableOpacity>
         </View>
 
         {/* Input Fields */}
-        <ProfileInput icon="person-outline" label="Full Name" scale={scaleWidth} />
-        <ProfileInput icon="mail-outline" label="Email Address" scale={scaleWidth} />
-        <ProfileInput icon="call-outline" label="Phone Number" scale={scaleWidth} />
-        <ProfileInput icon="briefcase-outline" label="Department" scale={scaleWidth} />
-        <ProfileInput icon="calendar-outline" label="Start Date" scale={scaleWidth} />
+        <ProfileInput icon="person-outline" label={t('profile.fullName')} scale={scaleWidth} />
+        <ProfileInput icon="mail-outline" label={t('profile.emailAddress')} scale={scaleWidth} />
+        <ProfileInput icon="call-outline" label={t('profile.phoneNumber')} scale={scaleWidth} />
+        <ProfileInput icon="briefcase-outline" label={t('profile.department')} scale={scaleWidth} />
+        <ProfileInput icon="calendar-outline" label={t('profile.startDate')} scale={scaleWidth} />
       </View>
     </SafeAreaView>
   );
@@ -143,7 +153,6 @@ export default function ProfileScreen() {
 const ProfileInput = ({ icon, label, scale }) => {
   return (
     <View style={{ marginBottom: 18 * scale, alignItems: 'center' }}>
-      {/* Label aligned to left */}
       <View style={{ width: 329 * scale }}>
         <Text
           style={{
@@ -157,7 +166,6 @@ const ProfileInput = ({ icon, label, scale }) => {
         </Text>
       </View>
 
-      {/* Input Box */}
       <View
         style={{
           flexDirection: 'row',
@@ -176,7 +184,7 @@ const ProfileInput = ({ icon, label, scale }) => {
       >
         <Ionicons name={icon} size={18 * scale} color="#3E0288" />
         <TextInput
-          placeholder="" // no placeholder visible
+          placeholder=""
           placeholderTextColor="transparent"
           style={{
             flex: 1,

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEYS } from '../constants/config';
 import { verifyEmailAPI, resendOTPAPI } from '../services/api';
 
 export default function VerifyEmailScreen({ navigation }) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
@@ -60,7 +62,7 @@ export default function VerifyEmailScreen({ navigation }) {
         await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(data.user));
       }
 
-      setSuccessMessage("Registered Successfully!");
+      setSuccessMessage(t('verifyEmail.registeredSuccessfully'));
 
       setTimeout(() => {
         navigation.navigate("Login");
@@ -69,7 +71,7 @@ export default function VerifyEmailScreen({ navigation }) {
     } catch (error) {
       // ✅ INVALID OTP HANDLING
       setOtp(""); // clears input
-      setErrorMessage(error.message || "Invalid OTP. Please try again.");
+      setErrorMessage(error.message || t('verifyEmail.invalidOTP'));
     } finally {
       setLoading(false);
     }
@@ -87,7 +89,7 @@ export default function VerifyEmailScreen({ navigation }) {
       setResendTimer(60);
       setCanResend(false);
     } catch (error) {
-      setErrorMessage(error.message || "Failed to resend OTP");
+      setErrorMessage(error.message || t('verifyEmail.failedToResend'));
     } finally {
       setResendLoading(false);
     }
@@ -107,12 +109,12 @@ export default function VerifyEmailScreen({ navigation }) {
 
       {/* Title */}
       <Text style={{ position: "absolute", top: 117, left: 27, fontSize: 24, color: "#FFFFFF" }}>
-        Verify Your Email
+        {t('verifyEmail.title')}
       </Text>
 
       {/* Subtitle */}
       <Text style={{ position: "absolute", top: 159, left: 27, width: 343, fontSize: 12, color: "#E8E8E8" }}>
-        One Time Password has been sent on {email}
+        {t('verifyEmail.subtitle')} {email}
       </Text>
 
       {/* OTP Input */}
@@ -132,7 +134,7 @@ export default function VerifyEmailScreen({ navigation }) {
         <TextInput
           value={otp}
           onChangeText={(text) => setOtp(text.replace(/[^0-9]/g, '').slice(0, 6))}
-          placeholder="Enter OTP received in your email"
+          placeholder={t('verifyEmail.enterOTP')}
           placeholderTextColor="#C4B5FD"
           style={{ flex: 1, color: "white", fontSize: 12 }}
           keyboardType="number-pad"
@@ -164,7 +166,7 @@ export default function VerifyEmailScreen({ navigation }) {
             <ActivityIndicator color="#3E0288" size="small" />
           ) : (
             <Text style={{ color: "#3E0288", fontWeight: "600", fontSize: 16 }}>
-              Verify Email
+              {t('verifyEmail.verifyEmail')}
             </Text>
           )}
         </TouchableOpacity>
@@ -218,12 +220,12 @@ export default function VerifyEmailScreen({ navigation }) {
               activeOpacity={0.7}
             >
               <Text style={{ fontSize: 12, color: "#FFFFFF", textDecorationLine: "underline" }}>
-                {resendLoading ? "Sending..." : "Resend OTP"}
+                {resendLoading ? t('verifyEmail.sending') : t('verifyEmail.resendOTP')}
               </Text>
             </TouchableOpacity>
           ) : (
             <Text style={{ fontSize: 12, color: "#E8E8E8" }}>
-              Resend OTP in {resendTimer} seconds
+              {t('verifyEmail.resendOTPIn')} {resendTimer} {t('verifyEmail.seconds')}
             </Text>
           )}
         </View>

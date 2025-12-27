@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from 'react-i18next';
 
 // ForgotPasswordScreen component
 export default function ForgotPasswordScreen({ navigation }) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
 
   return (
@@ -35,7 +37,7 @@ export default function ForgotPasswordScreen({ navigation }) {
           color: "#FFFFFF",
         }}
       >
-        Forgot Password
+        {t('forgotPassword.title')}
       </Text>
 
       {/* Subtitle */}
@@ -49,8 +51,7 @@ export default function ForgotPasswordScreen({ navigation }) {
           color: "#E8E8E8",
         }}
       >
-        Enter your email address and we'll send you instructions to reset your
-        password
+        {t('forgotPassword.subtitle')}
       </Text>
 
       {/* Email Label */}
@@ -58,13 +59,12 @@ export default function ForgotPasswordScreen({ navigation }) {
         style={{
           position: "absolute",
           top: 220,
-
           left: 27,
           fontSize: 12,
           color: "#DADADA",
         }}
       >
-        Email Address
+        {t('forgotPassword.emailAddress')}
       </Text>
 
       {/* Email Input */}
@@ -86,7 +86,7 @@ export default function ForgotPasswordScreen({ navigation }) {
         <TextInput
           value={email}
           onChangeText={setEmail}
-          placeholder="Enter your email address"
+          placeholder={t('forgotPassword.enterEmail')}
           placeholderTextColor="#C4B5FD"
           style={{ flex: 1, color: "white" }}
         />
@@ -97,7 +97,7 @@ export default function ForgotPasswordScreen({ navigation }) {
       <View
         style={{
           position: "absolute",
-          top: 400, // ⬅️ INCREASED space from email box
+          top: 400,
           left: 0,
           right: 0,
           alignItems: "center",
@@ -113,12 +113,12 @@ export default function ForgotPasswordScreen({ navigation }) {
             borderRadius: 12,
             justifyContent: "center",
             alignItems: "center",
-            marginBottom: 15, // ⬅️ more space
+            marginBottom: 15,
           }}
           activeOpacity={0.8}
         >
-          <Text className="text-purple-800 font-semibold text-base">
-            Send Reset Link
+          <Text style={{ color: '#6B21A8', fontWeight: '600', fontSize: 16 }}>
+            {t('forgotPassword.sendResetLink')}
           </Text>
         </TouchableOpacity>
 
@@ -127,7 +127,7 @@ export default function ForgotPasswordScreen({ navigation }) {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginBottom: 40, // ⬅️ more space before security
+            marginBottom: 40,
           }}
         >
           <Text
@@ -137,7 +137,7 @@ export default function ForgotPasswordScreen({ navigation }) {
               marginRight: 4,
             }}
           >
-            Remember your password?
+            {t('forgotPassword.rememberPassword')}
           </Text>
 
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
@@ -148,7 +148,7 @@ export default function ForgotPasswordScreen({ navigation }) {
                 color: "#FFFFFF",
               }}
             >
-              Login
+              {t('forgotPassword.login')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -157,17 +157,17 @@ export default function ForgotPasswordScreen({ navigation }) {
         <View style={{ alignItems: "center" }}>
           <Ionicons
             name="lock-closed-outline"
-            size={22} // ⬅️ slightly larger
+            size={22}
             color="#FFFFFF"
           />
           <Text
             style={{
               fontSize: 12,
               color: "#DADADA",
-              marginTop: 10, // ⬅️ more space under icon
+              marginTop: 10,
             }}
           >
-            Your security is important to us
+            {t('forgotPassword.securityMessage')}
           </Text>
         </View>
 

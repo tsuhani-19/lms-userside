@@ -9,10 +9,12 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function ChangePasswordScreen({ navigation }) {
+  const { t } = useTranslation();
   const CARD_RADIUS = 60;
 
   const scaleWidth = SCREEN_WIDTH / 414;
@@ -29,10 +31,10 @@ export default function ChangePasswordScreen({ navigation }) {
     newPassword.length > 0 && newPassword === confirmPassword;
 
   const getStrengthLabel = () => {
-    if (!newPassword) return 'Password Strength: Medium';
-    if (newPassword.length < 6) return 'Password Strength: Weak';
-    if (newPassword.length < 10) return 'Password Strength: Medium';
-    return 'Password Strength: Strong';
+    if (!newPassword) return `${t('changePassword.passwordStrength')}: ${t('changePassword.medium')}`;
+    if (newPassword.length < 6) return `${t('changePassword.passwordStrength')}: ${t('changePassword.weak')}`;
+    if (newPassword.length < 10) return `${t('changePassword.passwordStrength')}: ${t('changePassword.medium')}`;
+    return `${t('changePassword.passwordStrength')}: ${t('changePassword.strong')}`;
   };
 
   // base sizes you gave, scaled
@@ -83,7 +85,7 @@ export default function ChangePasswordScreen({ navigation }) {
               color: '#fff',
             }}
           >
-            Change Password
+            {t('changePassword.title')}
           </Text>
           <Text
             style={{
@@ -92,7 +94,7 @@ export default function ChangePasswordScreen({ navigation }) {
               marginTop: 1,
             }}
           >
-            Reset Your Password
+            {t('changePassword.subtitle')}
           </Text>
         </View>
       </View>
@@ -121,7 +123,7 @@ export default function ChangePasswordScreen({ navigation }) {
         <View style={{ flex: 1 }}>
           {/* Current Password (a bit lower) */}
           <View style={{ marginTop: 52 }}>
-            <FieldLabel text="Current Password" />
+            <FieldLabel text={t('changePassword.currentPassword')} />
             <PasswordInput
               width={FIELD_WIDTH}
               height={FIELD_HEIGHT}
@@ -130,12 +132,12 @@ export default function ChangePasswordScreen({ navigation }) {
               secureTextEntry={!showCurrent}
               onToggleVisibility={() => setShowCurrent(prev => !prev)}
             />
-            <Text style={styles.helperText}>Password Strength: Medium</Text>
+            <Text style={styles.helperText}>{t('changePassword.passwordStrength')}: {t('changePassword.medium')}</Text>
           </View>
 
           {/* New Password */}
           <View style={{ marginTop: 20 }}>
-            <FieldLabel text="New Password" />
+            <FieldLabel text={t('changePassword.newPassword')} />
             <PasswordInput
               width={FIELD_WIDTH}
               height={FIELD_HEIGHT}
@@ -145,7 +147,7 @@ export default function ChangePasswordScreen({ navigation }) {
               onToggleVisibility={() => setShowNew(prev => !prev)}
             />
             <Text style={styles.helperText}>
-              Must be at least 8 characters, include numbers and symbols
+              {t('changePassword.passwordRequirements')}
             </Text>
 
             {/* strength bar */}
@@ -192,7 +194,7 @@ export default function ChangePasswordScreen({ navigation }) {
 
           {/* Confirm New Password */}
           <View style={{ marginTop: 20 }}>
-            <FieldLabel text="Confirm New Password" />
+            <FieldLabel text={t('changePassword.confirmNewPassword')} />
             <PasswordInput
               width={FIELD_WIDTH}
               height={FIELD_HEIGHT}
@@ -202,7 +204,7 @@ export default function ChangePasswordScreen({ navigation }) {
               onToggleVisibility={() => setShowConfirm(prev => !prev)}
             />
             <Text style={styles.helperText}>
-              Re-enter the new password
+              {t('changePassword.reenterPassword')}
             </Text>
 
             {passwordsMatch && (
@@ -223,7 +225,7 @@ export default function ChangePasswordScreen({ navigation }) {
                     fontWeight: '500',
                   }}
                 >
-                  Passwords match
+                  {t('changePassword.passwordsMatch')}
                 </Text>
               </View>
             )}
@@ -249,7 +251,7 @@ export default function ChangePasswordScreen({ navigation }) {
               fontWeight: '600',
             }}
           >
-            Update Password
+            {t('changePassword.updatePassword')}
           </Text>
         </TouchableOpacity>
       </View>
